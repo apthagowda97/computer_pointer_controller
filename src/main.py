@@ -16,9 +16,9 @@ DIR_PATH = os.path.split(os.getcwd())[0]
 video_file = os.path.join(DIR_PATH,"bin\\demo.mp4")
 
 face_model = os.path.join(DIR_PATH,os.path.join('model\\intel\\face-detection-adas-binary-0001\\FP32-INT1\\face-detection-adas-binary-0001'))
-landmark_model= os.path.join(DIR_PATH,os.path.join('model\\intel\\landmarks-regression-retail-0009\\FP16\\landmarks-regression-retail-0009'))
-headpose_model= os.path.join(DIR_PATH,os.path.join('model\\intel\\head-pose-estimation-adas-0001\\FP16\\head-pose-estimation-adas-0001'))
-gaze_model = os.path.join(DIR_PATH,os.path.join('model\\intel\\gaze-estimation-adas-0002\\FP16\\gaze-estimation-adas-0002'))
+landmark_model= os.path.join(DIR_PATH,os.path.join('model\\intel\\landmarks-regression-retail-0009\\FP32-INT8\\landmarks-regression-retail-0009'))
+headpose_model= os.path.join(DIR_PATH,os.path.join('model\\intel\\head-pose-estimation-adas-0001\\FP32-INT8\\head-pose-estimation-adas-0001'))
+gaze_model = os.path.join(DIR_PATH,os.path.join('model\\intel\\gaze-estimation-adas-0002\\FP32-INT8\\gaze-estimation-adas-0002'))
 
 face_detection= FaceDetection(face_model)
 face_detection.load_model()
@@ -40,6 +40,7 @@ input_feeder.load_data()
 cv2.namedWindow('preview', cv2.WND_PROP_FULLSCREEN)
 cv2.setWindowProperty('preview', cv2.WND_PROP_FULLSCREEN, cv2.WINDOW_FULLSCREEN)
 
+start_time = time.time()
 for i in range(20):
     image = next(iter(input_feeder.next_batch()))
     face_image = face_detection.predict(image)
@@ -51,6 +52,6 @@ for i in range(20):
     key = cv2.waitKey(20)
     if key == 27: # exit on ESC
         break
-
+print("Infr time per frame: ",(time.time()-start_time)/20)
 cv2.destroyWindow("preview")
 input_feeder.close()
