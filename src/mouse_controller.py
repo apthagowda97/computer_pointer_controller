@@ -12,7 +12,7 @@ import pyautogui
 class MouseController:
     def __init__(self, precision, speed):
         precision_dict={'high':200, 'low':600, 'medium':400}
-        speed_dict={'fast':1, 'slow':10, 'medium':5}
+        speed_dict={'fast':1, 'slow':8, 'medium':4}
 
         self.precision=precision_dict[precision]
         self.speed=speed_dict[speed]

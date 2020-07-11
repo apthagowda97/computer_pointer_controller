@@ -1,0 +1,27 @@
+            Precision(face,landmark,head,gaze): FP32-INT1,FP32,FP32,FP32
+            4 models load time: 1.274sec
+            Face model avg inference per frame: 0.048sec
+            Landmark model avg inference per frame: 0.048sec
+            Head model avg inference per frame: 0.004sec
+            Gaze model avg inference per frame: 0.010sec
+            4 Model avg inference per frame: 0.111sec
+            Total inference time: 20.021sec
+            ----------------------------------------            
+            Precision(face,landmark,head,gaze): FP32-INT1,FP16,FP16,FP16
+            4 models load time: 1.465sec
+            Face model avg inference per frame: 0.048sec
+            Landmark model avg inference per frame: 0.048sec
+            Head model avg inference per frame: 0.005sec
+            Gaze model avg inference per frame: 0.009sec
+            4 Model avg inference per frame: 0.109sec
+            Total inference time: 23.526sec
+            ----------------------------------------                        
+            Precision(face,landmark,head,gaze): FP32-INT1,FP32-INT8,FP32-INT8,FP32-INT8
+            4 models load time: 4.612sec
+            Face model avg inference per frame: 0.114sec
+            Landmark model avg inference per frame: 0.114sec
+            Head model avg inference per frame: 0.006sec
+            Gaze model avg inference per frame: 0.008sec
+            4 Model avg inference per frame: 0.241sec
+            Total inference time: 28.785sec
+            ----------------------------------------            
