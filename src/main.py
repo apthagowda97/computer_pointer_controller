@@ -15,9 +15,9 @@ from argparse import ArgumentParser
 DIR_PATH = os.path.split(os.getcwd())[0]
 video_path = os.path.join(DIR_PATH,"bin\\demo.mp4")
 face_model_path = os.path.join(DIR_PATH,os.path.join('model\\intel\\face-detection-adas-binary-0001\\FP32-INT1\\face-detection-adas-binary-0001'))
-landmark_model_path = os.path.join(DIR_PATH,os.path.join('model\\intel\\landmarks-regression-retail-0009\\FP32-INT8\\landmarks-regression-retail-0009'))
-headpose_model_path = os.path.join(DIR_PATH,os.path.join('model\\intel\\head-pose-estimation-adas-0001\\FP32-INT8\\head-pose-estimation-adas-0001'))
-gaze_model_path = os.path.join(DIR_PATH,os.path.join('model\\intel\\gaze-estimation-adas-0002\\FP32-INT8\\gaze-estimation-adas-0002'))
+landmark_model_path = os.path.join(DIR_PATH,os.path.join('model\\intel\\landmarks-regression-retail-0009\\FP32\\landmarks-regression-retail-0009'))
+headpose_model_path = os.path.join(DIR_PATH,os.path.join('model\\intel\\head-pose-estimation-adas-0001\\FP32\\head-pose-estimation-adas-0001'))
+gaze_model_path = os.path.join(DIR_PATH,os.path.join('model\\intel\\gaze-estimation-adas-0002\\FP32\\gaze-estimation-adas-0002'))
 
 
 def build_argparser():
@@ -46,7 +46,8 @@ def build_argparser():
 
 def inference(args):
     
-    time_sheet = {'model_load':[],'face_infr':[],'landmark_infr':[],'head_infr':[],'gaze_infr':[],'total_infr':0}
+    time_sheet = {'model_load':[],'face_infr':[],'landmark_infr':[],
+    'head_infr':[],'gaze_infr':[],'infr_per_frame':[],'total_infr':0}
     model_load_start = time.time()
 
     face_detection= FaceDetection(args.face_model)
@@ -68,8 +69,10 @@ def inference(args):
     input_feeder = InputFeeder(args.input_type,args.input_file)
     input_feeder.load_data()
 
+    total_infr_start = time.time()
     for image in input_feeder.next_batch():
-
+        if image is None:
+            break
         face_infr_start = time.time()
         face_image = face_detection.predict(image)
         time_sheet['face_infr'].append(time.time()-face_infr_start)
@@ -85,15 +88,14 @@ def inference(args):
         gaze_infr_start = time.time()
         x,y,z = gaze_estimation.predict(left_eye_image,right_eye_image,head_pose_angles)
         time_sheet['gaze_infr'].append(time.time()-gaze_infr_start)
-
+        time_sheet['infr_per_frame'].append(time.time()-face_infr_start)
         cv2.imshow('preview',image)
         mouse_controller.move(x,y)
         key = cv2.waitKey(20)
         if key == 27: # exit on ESC
-            time_sheet['total_infr'] = time.time()-model_load_start
-            return time_sheet
+            break
 
-    time_sheet['total_infr'] = time.time()-model_load_start
+    time_sheet['total_infr'] = time.time()-total_infr_start
     input_feeder.close()
     return time_sheet
 
@@ -102,26 +104,27 @@ def end_result(args,time_sheet):
     file = open("result.txt", "a")
 
     avg_face = np.mean(time_sheet['face_infr'])
-    avg_landmark = np.mean(time_sheet['face_infr'])
+    avg_landmark = np.mean(time_sheet['landmark_infr'])
     avg_head = np.mean(time_sheet['head_infr'])
     avg_gaze = np.mean(time_sheet['gaze_infr'])
+    avg_infr = np.mean(time_sheet['infr_per_frame'])
 
     data = "\n\
             Precision(face,landmark,head,gaze): FP32-INT1,FP{0},FP{1},FP{2}\n\
-            4 models load time: {3:.3f}sec\n\
-            Face model avg inference per frame: {4:.3f}sec\n\
-            Landmark model avg inference per frame: {5:.3f}sec\n\
-            Head model avg inference per frame: {6:.3f}sec\n\
-            Gaze model avg inference per frame: {7:.3f}sec\n\
-            4 Model avg inference per frame: {8:.3f}sec\n\
-            Total inference time: {9:.3f}sec\n\
+            4 models load time: {3:.4f}sec\n\
+            Face model avg inference per frame: {4:.4f}sec\n\
+            Landmark model avg inference per frame: {5:.4f}sec\n\
+            Head model avg inference per frame: {6:.4f}sec\n\
+            Gaze model avg inference per frame: {7:.4f}sec\n\
+            4 Model avg inference per frame: {8:.4f}sec\n\
+            Total inference time: {9:.4f}sec\n\
             ----------------------------------------\
             ".format(\
                 args.landmark_model.split("FP")[1].split("\\")[0],
                 args.head_model.split("FP")[1].split("\\")[0],
                 args.gaze_model.split("FP")[1].split("\\")[0],
                 np.mean(time_sheet['model_load']),avg_face,avg_landmark,avg_head,avg_gaze,\
-                np.mean(avg_face+avg_landmark+avg_head+avg_gaze),time_sheet['total_infr'])
+                avg_infr,time_sheet['total_infr'])
     file.write(data)
     file.close()
 

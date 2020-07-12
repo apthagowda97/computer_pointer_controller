@@ -9,6 +9,7 @@ This class is provided to help get you started; you can choose whether you want 
 '''
 import pyautogui
 
+pyautogui.FAILSAFE = False
 class MouseController:
     def __init__(self, precision, speed):
         precision_dict={'high':200, 'low':600, 'medium':400}
