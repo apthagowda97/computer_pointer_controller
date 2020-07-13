@@ -92,7 +92,7 @@ optional arguments:
 
 ## Benchmarks
 
-After running the `main.py`, the result will update in the `result.txt` file. It will tell about the model's load time along with the inference time per frame for each model and the total inference time.
+After running the `main.py`, the result will update in the [result.log](src\result.log) file. It will tell about the model's load time along with the inference time per frame for each model and the total inference time.
 
 | Precision | Model's load time|face infrence|landmark infrence|head infrence|gaze infrence| Avg infrence|
 | --- | --- | --- |--- | --- | --- | --- |
