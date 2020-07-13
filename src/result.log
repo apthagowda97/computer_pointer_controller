@@ -1,0 +1,33 @@
+INFO:root:=================================================================================
+INFO:root:Precision(face,landmark,head,gaze): FP32-INT1,FP32,FP32,FP32
+INFO:root:4 models load time: 0.8550sec
+INFO:root:Face model avg inference per frame: 0.0471sec
+INFO:root:Landmark model avg inference per frame: 0.0003sec
+INFO:root:Head model avg inference per frame: 0.0019sec
+INFO:root:Gaze model avg inference per frame: 0.0085sec
+INFO:root:4 Model avg inference per frame: 0.0577sec
+INFO:root:Total inference time: 98.2005sec
+INFO:root:====================================END==========================================
+
+INFO:root:=================================================================================
+INFO:root:Precision(face,landmark,head,gaze): FP32-INT1,FP16,FP16,FP16
+INFO:root:4 models load time: 1.1840sec
+INFO:root:Face model avg inference per frame: 0.0471sec
+INFO:root:Landmark model avg inference per frame: 0.0000sec
+INFO:root:Head model avg inference per frame: 0.0021sec
+INFO:root:Gaze model avg inference per frame: 0.0103sec
+INFO:root:4 Model avg inference per frame: 0.0596sec
+INFO:root:Total inference time: 98.3371sec
+INFO:root:====================================END==========================================
+
+INFO:root:=================================================================================
+INFO:root:Precision(face,landmark,head,gaze): FP32-INT1,FP32-INT8,FP32-INT8,FP32-INT8
+INFO:root:4 models load time: 3.0792sec
+INFO:root:Face model avg inference per frame: 0.0469sec
+INFO:root:Landmark model avg inference per frame: 0.0000sec
+INFO:root:Head model avg inference per frame: 0.0016sec
+INFO:root:Gaze model avg inference per frame: 0.0085sec
+INFO:root:4 Model avg inference per frame: 0.0569sec
+INFO:root:Total inference time: 98.3904sec
+INFO:root:====================================END==========================================
+
