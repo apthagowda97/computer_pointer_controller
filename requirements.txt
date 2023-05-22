@@ -1,5 +1,5 @@
 numpy==1.16.5
-requests==2.18.4
+requests==2.31.0
 PyAutoGUI==0.9.50
 opencv-python==4.2.0.34
 matplotlib==3.1.1
